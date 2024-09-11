@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://bw1x8vi0s1g7g"]
+
+[ext_resource type="Theme" uid="uid://d23flwkfyegxj" path="res://assets/misc/main_menu.tres" id="1_4h1ox"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q20na"]
+bg_color = Color(0.261159, 0.713552, 0, 1)
+
+[node name="PlayerRow" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+theme = ExtResource("1_4h1ox")
+
+[node name="Label" type="RichTextLabel" parent="."]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_4h1ox")
+theme_override_font_sizes/normal_font_size = 22
+scroll_active = false
+
+[node name="Ready" type="Panel" parent="."]
+visible = false
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+theme = ExtResource("1_4h1ox")
+theme_override_styles/panel = SubResource("StyleBoxFlat_q20na")

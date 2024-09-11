@@ -1,0 +1,36 @@
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://d23flwkfyegxj"]
+
+[ext_resource type="FontFile" uid="uid://prhrnt2u2q7y" path="res://assets/fonts/kongtext.ttf" id="1_j334i"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cvekl"]
+bg_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1a5tc"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsvqh"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pljxy"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_krv0t"]
+color = Color(0.2484, 0.2484, 0.2484, 1)
+thickness = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fk8lp"]
+bg_color = Color(0, 0, 0, 1)
+
+[resource]
+default_font = ExtResource("1_j334i")
+default_font_size = 28
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.237539, 0.237539, 0.237539, 0.501961)
+Button/styles/focus = SubResource("StyleBoxFlat_cvekl")
+Button/styles/hover = SubResource("StyleBoxFlat_cvekl")
+Button/styles/normal = SubResource("StyleBoxFlat_cvekl")
+Button/styles/pressed = SubResource("StyleBoxFlat_1a5tc")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_jsvqh")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_pljxy")
+HSlider/styles/slider = SubResource("StyleBoxLine_krv0t")
+Panel/styles/panel = SubResource("StyleBoxFlat_fk8lp")

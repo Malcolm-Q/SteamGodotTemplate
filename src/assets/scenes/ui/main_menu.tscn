@@ -1,0 +1,594 @@
+[gd_scene load_steps=17 format=3 uid="uid://bd47uqypshvxf"]
+
+[ext_resource type="Script" path="res://assets/scripts/ui/main_menu.gd" id="1_5mr7l"]
+[ext_resource type="Theme" uid="uid://d23flwkfyegxj" path="res://assets/misc/main_menu.tres" id="2_uanxr"]
+[ext_resource type="Script" path="res://assets/scripts/ui/button.gd" id="4_12gtt"]
+[ext_resource type="Script" path="res://assets/scripts/ui/ui_state.gd" id="5_nbyv8"]
+[ext_resource type="Script" path="res://assets/scripts/ui/focus_grabber.gd" id="7_3jetc"]
+[ext_resource type="Script" path="res://assets/scripts/ui/settings_ui.gd" id="7_vrko7"]
+
+[sub_resource type="Animation" id="Animation_bsp0i"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/RichTextLabel4:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_wbb8u"]
+resource_name = "loop"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/RichTextLabel4:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.5, 0.733333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mct42"]
+_data = {
+"RESET": SubResource("Animation_bsp0i"),
+"loop": SubResource("Animation_wbb8u")
+}
+
+[sub_resource type="InputEventAction" id="InputEventAction_qwbi3"]
+action = &"back"
+
+[sub_resource type="InputEventAction" id="InputEventAction_iw55c"]
+action = &"start"
+
+[sub_resource type="InputEventAction" id="InputEventAction_vxb0v"]
+action = &"ui_select"
+
+[sub_resource type="Shortcut" id="Shortcut_nit6e"]
+events = [SubResource("InputEventAction_qwbi3"), SubResource("InputEventAction_iw55c"), SubResource("InputEventAction_vxb0v")]
+
+[sub_resource type="Animation" id="Animation_2geqd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/RichTextLabel:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["[center]LOADING[/center]"]
+}
+
+[sub_resource type="Animation" id="Animation_vn3rx"]
+resource_name = "load"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/RichTextLabel:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": ["LOADING", "LOADING.", "LOADING..", "LOADING..."]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3h0fr"]
+_data = {
+"RESET": SubResource("Animation_2geqd"),
+"load": SubResource("Animation_vn3rx")
+}
+
+[node name="MainMenu" type="CanvasLayer"]
+follow_viewport_enabled = true
+script = ExtResource("1_5mr7l")
+
+[node name="Start" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+script = ExtResource("5_nbyv8")
+can_go_back = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Start"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -229.0
+offset_right = 400.0
+offset_bottom = 307.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Start/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_uanxr")
+theme_override_font_sizes/normal_font_size = 128
+bbcode_enabled = true
+text = "[center]TITLE[/center]"
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="Start/VBoxContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_uanxr")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "
+
+
+
+
+
+
+[center]PRESS START[/center]"
+scroll_active = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Start"]
+libraries = {
+"": SubResource("AnimationLibrary_mct42")
+}
+autoplay = "loop"
+
+[node name="start" type="Button" parent="Start"]
+layout_mode = 0
+offset_left = 439.0
+offset_top = 527.0
+offset_right = 708.0
+offset_bottom = 567.0
+shortcut = SubResource("Shortcut_nit6e")
+shortcut_in_tooltip = false
+
+[node name="Main" type="Panel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+script = ExtResource("5_nbyv8")
+can_go_back = false
+
+[node name="Title" type="RichTextLabel" parent="Main"]
+layout_mode = 1
+offset_top = 7.0
+offset_right = 1149.0
+offset_bottom = 167.0
+size_flags_vertical = 3
+theme = ExtResource("2_uanxr")
+theme_override_colors/default_color = Color(0.262932, 0.262932, 0.262932, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_outline_size = 6
+theme_override_font_sizes/normal_font_size = 128
+bbcode_enabled = true
+text = "TITLE"
+
+[node name="options" type="VBoxContainer" parent="Main"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 48.0
+offset_top = -26.0
+offset_right = 494.0
+offset_bottom = 244.0
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+alignment = 1
+
+[node name="Play" type="Button" parent="Main/options"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Quit")
+theme = ExtResource("2_uanxr")
+text = ">PLAY
+"
+alignment = 0
+script = ExtResource("4_12gtt")
+_focused = true
+
+[node name="Settings" type="Button" parent="Main/options"]
+layout_mode = 2
+theme = ExtResource("2_uanxr")
+text = " SETTINGS"
+alignment = 0
+script = ExtResource("4_12gtt")
+
+[node name="Quit" type="Button" parent="Main/options"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Play")
+theme = ExtResource("2_uanxr")
+text = " QUIT"
+alignment = 0
+script = ExtResource("4_12gtt")
+
+[node name="Play" type="Panel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+script = ExtResource("5_nbyv8")
+
+[node name="Title" type="RichTextLabel" parent="Play"]
+layout_mode = 1
+offset_top = 7.0
+offset_right = 1149.0
+offset_bottom = 167.0
+size_flags_vertical = 3
+theme = ExtResource("2_uanxr")
+theme_override_colors/default_color = Color(0.262932, 0.262932, 0.262932, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_outline_size = 6
+theme_override_font_sizes/normal_font_size = 128
+bbcode_enabled = true
+text = "TITLE"
+
+[node name="options" type="VBoxContainer" parent="Play"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 48.0
+offset_top = -26.0
+offset_right = 494.0
+offset_bottom = 244.0
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+alignment = 1
+
+[node name="Online" type="Button" parent="Play/options"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../LAN")
+theme = ExtResource("2_uanxr")
+text = ">CREATE LOBBY
+"
+alignment = 0
+script = ExtResource("4_12gtt")
+_focused = true
+
+[node name="LAN" type="Button" parent="Play/options"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Online")
+theme = ExtResource("2_uanxr")
+text = " LAN"
+alignment = 0
+script = ExtResource("4_12gtt")
+
+[node name="LAN" type="Panel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+script = ExtResource("5_nbyv8")
+
+[node name="Title" type="RichTextLabel" parent="LAN"]
+layout_mode = 1
+offset_top = 7.0
+offset_right = 1149.0
+offset_bottom = 167.0
+size_flags_vertical = 3
+theme = ExtResource("2_uanxr")
+theme_override_colors/default_color = Color(0.262932, 0.262932, 0.262932, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_outline_size = 6
+theme_override_font_sizes/normal_font_size = 128
+bbcode_enabled = true
+text = "TITLE"
+
+[node name="options" type="VBoxContainer" parent="LAN"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 48.0
+offset_top = -26.0
+offset_right = 494.0
+offset_bottom = 244.0
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+alignment = 1
+
+[node name="Host" type="Button" parent="LAN/options"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Join")
+theme = ExtResource("2_uanxr")
+text = ">HOST
+"
+alignment = 0
+script = ExtResource("4_12gtt")
+_focused = true
+
+[node name="Join" type="Button" parent="LAN/options"]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Host")
+theme = ExtResource("2_uanxr")
+text = " JOIN"
+alignment = 0
+script = ExtResource("4_12gtt")
+
+[node name="Settings" type="Panel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+script = ExtResource("7_vrko7")
+
+[node name="Title" type="RichTextLabel" parent="Settings"]
+layout_mode = 0
+offset_top = 7.0
+offset_right = 1149.0
+offset_bottom = 167.0
+size_flags_vertical = 3
+theme = ExtResource("2_uanxr")
+theme_override_colors/default_color = Color(0.262932, 0.262932, 0.262932, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_outline_size = 6
+theme_override_font_sizes/normal_font_size = 128
+bbcode_enabled = true
+text = "TITLE"
+
+[node name="options" type="VBoxContainer" parent="Settings"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 238.0
+offset_top = -199.0
+offset_right = 882.0
+offset_bottom = 185.0
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+alignment = 1
+
+[node name="Fullscreen" type="Button" parent="Settings/options"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../../Apply")
+theme = ExtResource("2_uanxr")
+text = " WINDOW     :  WINDOWED
+"
+alignment = 0
+script = ExtResource("4_12gtt")
+_focused = true
+
+[node name="VSync" type="Button" parent="Settings/options"]
+layout_mode = 2
+theme = ExtResource("2_uanxr")
+text = " VSYNC      :  ENABLED"
+alignment = 0
+script = ExtResource("4_12gtt")
+
+[node name="FPS" type="Button" parent="Settings/options"]
+layout_mode = 2
+theme = ExtResource("2_uanxr")
+text = " FPS TARGET :  0"
+alignment = 0
+script = ExtResource("4_12gtt")
+
+[node name="Music" type="Control" parent="Settings/options"]
+layout_mode = 2
+theme = ExtResource("2_uanxr")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Settings/options/Music"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 0
+offset_right = 476.0
+offset_bottom = 30.0
+theme = ExtResource("2_uanxr")
+text = " MUSIC VOL  :"
+
+[node name="HSlider" type="HSlider" parent="Settings/options/Music" node_paths=PackedStringArray("affected_text")]
+layout_mode = 0
+offset_left = 426.0
+offset_top = 7.0
+offset_right = 651.0
+offset_bottom = 23.0
+size_flags_horizontal = 4
+theme = ExtResource("2_uanxr")
+max_value = 1.0
+step = 0.05
+value = 0.5
+script = ExtResource("7_3jetc")
+affected_text = NodePath("../RichTextLabel")
+
+[node name="SFX" type="Control" parent="Settings/options"]
+layout_mode = 2
+theme = ExtResource("2_uanxr")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Settings/options/SFX"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 0
+offset_top = 30.0
+offset_right = 476.0
+offset_bottom = 60.0
+theme = ExtResource("2_uanxr")
+text = " SFX VOL    :"
+
+[node name="HSlider" type="HSlider" parent="Settings/options/SFX" node_paths=PackedStringArray("affected_text")]
+custom_minimum_size = Vector2(225, 0)
+layout_mode = 0
+offset_left = 426.0
+offset_top = 37.0
+offset_right = 651.0
+offset_bottom = 53.0
+size_flags_horizontal = 4
+theme = ExtResource("2_uanxr")
+max_value = 1.0
+step = 0.05
+value = 0.5
+script = ExtResource("7_3jetc")
+affected_text = NodePath("../RichTextLabel")
+
+[node name="Mouse" type="Control" parent="Settings/options"]
+layout_mode = 2
+theme = ExtResource("2_uanxr")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Settings/options/Mouse"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 0
+offset_top = 60.0
+offset_right = 476.0
+offset_bottom = 90.0
+theme = ExtResource("2_uanxr")
+text = " MOUSE SENS :"
+
+[node name="HSlider" type="HSlider" parent="Settings/options/Mouse" node_paths=PackedStringArray("affected_text")]
+custom_minimum_size = Vector2(225, 0)
+layout_mode = 0
+offset_left = 426.0
+offset_top = 67.0
+offset_right = 651.0
+offset_bottom = 83.0
+size_flags_horizontal = 4
+theme = ExtResource("2_uanxr")
+max_value = 1.0
+step = 0.05
+value = 0.5
+script = ExtResource("7_3jetc")
+affected_text = NodePath("../RichTextLabel")
+
+[node name="Apply" type="Button" parent="Settings"]
+layout_mode = 0
+offset_left = 499.0
+offset_top = 578.0
+offset_right = 667.0
+offset_bottom = 607.0
+focus_neighbor_bottom = NodePath("../options/Fullscreen")
+theme = ExtResource("2_uanxr")
+text = " APPLY"
+alignment = 0
+script = ExtResource("4_12gtt")
+
+[node name="Loading" type="Panel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+script = ExtResource("5_nbyv8")
+can_go_back = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Loading"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -35.0
+offset_right = 400.0
+offset_bottom = 225.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Loading/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_uanxr")
+theme_override_font_sizes/normal_font_size = 72
+bbcode_enabled = true
+text = "[center]LOADING[/center]"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Loading"]
+libraries = {
+"": SubResource("AnimationLibrary_3h0fr")
+}
+autoplay = "load"
+
+[node name="Error" type="Panel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_uanxr")
+script = ExtResource("5_nbyv8")
+can_go_back = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Error"]
+layout_mode = 2
+offset_left = 73.0
+offset_top = 71.0
+offset_right = 1073.0
+offset_bottom = 471.0
+size_flags_vertical = 3
+theme = ExtResource("2_uanxr")
+theme_override_font_sizes/normal_font_size = 52
+bbcode_enabled = true
+text = "[center]ERROR MSG HERE[/center]"
+
+[node name="Return" type="Button" parent="Error"]
+layout_mode = 0
+offset_left = 354.0
+offset_top = 533.0
+offset_right = 802.0
+offset_bottom = 562.0
+theme = ExtResource("2_uanxr")
+shortcut_in_tooltip = false
+text = " RETURN TO MENU "
+alignment = 0
+script = ExtResource("4_12gtt")
+_focused = true
+
+[connection signal="pressed" from="Start/start" to="." method="transition" binds= ["main"]]
+[connection signal="pressed" from="Main/options/Play" to="." method="transition" binds= ["play"]]
+[connection signal="pressed" from="Main/options/Settings" to="." method="transition" binds= ["settings"]]
+[connection signal="pressed" from="Main/options/Quit" to="." method="_on_quit"]
+[connection signal="pressed" from="Play/options/Online" to="." method="_on_host" binds= [false]]
+[connection signal="pressed" from="Play/options/LAN" to="." method="transition" binds= ["lan"]]
+[connection signal="pressed" from="LAN/options/Host" to="." method="_on_host" binds= [true]]
+[connection signal="pressed" from="LAN/options/Join" to="." method="_on_join_lan"]
+[connection signal="pressed" from="Settings/options/Fullscreen" to="." method="_toggle_fullscreen"]
+[connection signal="pressed" from="Settings/options/VSync" to="." method="_set_vsync"]
+[connection signal="pressed" from="Settings/options/FPS" to="." method="_set_fps"]
+[connection signal="value_changed" from="Settings/options/Music/HSlider" to="." method="_set_music"]
+[connection signal="value_changed" from="Settings/options/SFX/HSlider" to="." method="_set_sfx"]
+[connection signal="value_changed" from="Settings/options/Mouse/HSlider" to="." method="_on_mouse_sensitivity"]
+[connection signal="pressed" from="Error/Return" to="." method="transition" binds= ["main"]]

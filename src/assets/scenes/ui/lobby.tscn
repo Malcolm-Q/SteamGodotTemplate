@@ -1,0 +1,161 @@
+[gd_scene load_steps=6 format=3 uid="uid://cyn7ibrfqnds4"]
+
+[ext_resource type="Script" path="res://assets/scripts/ui/lobby.gd" id="1_w0i6f"]
+[ext_resource type="Theme" uid="uid://d23flwkfyegxj" path="res://assets/misc/main_menu.tres" id="2_rvpx7"]
+[ext_resource type="Script" path="res://assets/scripts/ui/button.gd" id="4_43473"]
+[ext_resource type="PackedScene" uid="uid://bw1x8vi0s1g7g" path="res://assets/scenes/ui/player_row.tscn" id="4_m1llm"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_r5h3g"]
+color = Color(0.525101, 0.525101, 0.525101, 1)
+thickness = 10
+
+[node name="Lobby" type="CanvasLayer"]
+follow_viewport_enabled = true
+script = ExtResource("1_w0i6f")
+row = ExtResource("4_m1llm")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_rvpx7")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme = ExtResource("2_rvpx7")
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "SOMEONE'S LOBBY"
+
+[node name="Title" type="RichTextLabel" parent="Panel"]
+layout_mode = 2
+offset_left = 656.0
+offset_top = 101.0
+offset_right = 1151.0
+offset_bottom = 137.0
+size_flags_vertical = 3
+theme = ExtResource("2_rvpx7")
+theme_override_font_sizes/normal_font_size = 28
+text = "CONNECTED PLAYERS"
+
+[node name="Borders" type="Control" parent="Panel"]
+anchors_preset = 0
+theme = ExtResource("2_rvpx7")
+
+[node name="Panel7" type="Panel" parent="Panel/Borders"]
+layout_mode = 0
+offset_left = 636.0
+offset_top = 139.0
+offset_right = 1152.0
+offset_bottom = 139.0
+theme = ExtResource("2_rvpx7")
+theme_override_styles/panel = SubResource("StyleBoxLine_r5h3g")
+
+[node name="Panel" type="Panel" parent="Panel/Borders"]
+layout_mode = 0
+offset_top = 81.0
+offset_right = 1151.0
+offset_bottom = 92.0
+theme = ExtResource("2_rvpx7")
+theme_override_styles/panel = SubResource("StyleBoxLine_r5h3g")
+
+[node name="Panel2" type="Panel" parent="Panel/Borders"]
+layout_mode = 0
+offset_top = 563.0
+offset_right = 528.0
+offset_bottom = 574.0
+scale = Vector2(2.2, 1)
+theme = ExtResource("2_rvpx7")
+theme_override_styles/panel = SubResource("StyleBoxLine_r5h3g")
+
+[node name="Panel4" type="Panel" parent="Panel/Borders"]
+layout_mode = 0
+offset_left = 921.004
+offset_top = 564.0
+offset_right = 2072.0
+offset_bottom = 575.0
+rotation = 1.5708
+theme = ExtResource("2_rvpx7")
+theme_override_styles/panel = SubResource("StyleBoxLine_r5h3g")
+
+[node name="Panel6" type="Panel" parent="Panel/Borders"]
+layout_mode = 0
+offset_left = 636.0
+offset_top = 82.0
+offset_right = 1787.0
+offset_bottom = 93.0
+rotation = 1.5708
+theme = ExtResource("2_rvpx7")
+theme_override_styles/panel = SubResource("StyleBoxLine_r5h3g")
+
+[node name="Exit" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -562.0
+offset_top = 272.0
+offset_right = 26.0
+offset_bottom = 301.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_neighbor_left = NodePath("../Ready")
+focus_neighbor_right = NodePath("../Start")
+focus_next = NodePath("../Start")
+focus_previous = NodePath("../Ready")
+theme = ExtResource("2_rvpx7")
+text = "  EXIT TO MAIN MENU  "
+script = ExtResource("4_43473")
+
+[node name="Ready" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 928.004
+offset_top = 598.0
+offset_right = 1124.0
+offset_bottom = 627.0
+focus_neighbor_left = NodePath("../Start")
+focus_neighbor_right = NodePath("../Exit")
+focus_next = NodePath("../Exit")
+focus_previous = NodePath("../Start")
+theme = ExtResource("2_rvpx7")
+text = ">READY"
+script = ExtResource("4_43473")
+_focused = true
+
+[node name="Start" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 644.0
+offset_top = 594.0
+offset_right = 904.0
+offset_bottom = 631.0
+focus_neighbor_left = NodePath("../Exit")
+focus_neighbor_right = NodePath("../Ready")
+focus_next = NodePath("../Ready")
+focus_previous = NodePath("../Exit")
+theme = ExtResource("2_rvpx7")
+theme_override_colors/font_color = Color(0.829817, 0.978527, 0.822901, 1)
+disabled = true
+text = "  START  "
+script = ExtResource("4_43473")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+offset_left = 648.0
+offset_top = 164.0
+offset_right = 1143.0
+offset_bottom = 548.0
+theme = ExtResource("2_rvpx7")

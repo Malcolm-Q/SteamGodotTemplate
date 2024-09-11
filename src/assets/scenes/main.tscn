@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://clt7s7jihrd4f"]
+
+[ext_resource type="Script" path="res://assets/scripts/main.gd" id="1_m8bhc"]
+[ext_resource type="PackedScene" uid="uid://bd47uqypshvxf" path="res://assets/scenes/ui/main_menu.tscn" id="1_rmc40"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_m8bhc")
+
+[node name="MainMenu" parent="." instance=ExtResource("1_rmc40")]
+
+[node name="StaticAudio" type="Node" parent="."]
+
+[node name="UIAudio" type="AudioStreamPlayer" parent="StaticAudio"]
+max_polyphony = 10
+bus = &"Music"
+
+[node name="MusicAudio" type="AudioStreamPlayer" parent="StaticAudio"]
+bus = &"Music"
