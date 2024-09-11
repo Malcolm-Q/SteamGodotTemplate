@@ -73,7 +73,7 @@ func _on_lobby_created(conn, id) -> void:
 		Steam.setLobbyData(lobby_id, "name", (my_name+"'s Lobby"))
 		Steam.setLobbyJoinable(lobby_id, true)
 		multiplayer_peer = SteamMultiplayerPeer.new()
-		var error = multiplayer_peer.create_host(0)
+		var error = multiplayer_peer.create_host(0) # this is virtual port not player limit do not change
 		if error != OK:
 			multiplayer_peer.close()
 			Steam.leaveLobby(lobby_id)
@@ -142,7 +142,7 @@ func _on_join_lan() -> void:
 func _on_host_lan() -> void:
 	lan = true
 	multiplayer_peer = ENetMultiplayerPeer.new()
-	var error = multiplayer_peer.create_server(8565, 1)
+	var error = multiplayer_peer.create_server(8565, 3) # allow 3 peers for 4 player lobby
 	if error != OK:
 		SignalBus.display_error.emit("FAILED TO CREATE HOST\nCODE: " + str(error))
 		multiplayer_peer.close()
@@ -153,7 +153,7 @@ func _on_host_lan() -> void:
 
 func _on_host_steam() -> void:
 	lan = false
-	Steam.createLobby(Steam.LOBBY_TYPE_PUBLIC, 2)
+	Steam.createLobby(Steam.LOBBY_TYPE_FRIENDS_ONLY, 4) # 4 player lobby
 
 func check_command_line() -> void:
 	var these_arguments: Array = OS.get_cmdline_args()
