@@ -1,30 +1,54 @@
 extends Node
+class_name Main
 
-@onready var audio : AudioStreamPlayer = $StaticAudio/UIAudio
-@onready var musicAudio : AudioStreamPlayer = $StaticAudio/MusicAudio
-@export var ui_move : AudioStream
-@onready var music_dict : Dictionary = {
-	#'title':preload('example.mp3')
+# This mostly exists as a root for scene switches and to play synced music independent of scenes
+
+@onready var musicAudio : AudioStreamPlayer = $MusicAudio
+@onready var current_music_dict : Array = main_music_dict.keys()
+
+var special_music_dict : Dictionary = {
+	# put special music like a winning theme in here
 }
+var main_music_dict : Dictionary = {
+	# put general music in here
+	# 'My Song' : 'res://assets/audio/music/my_song.ogg'
+}
+
+var current_song := ""
+var sync := false
+
 
 func _ready() -> void:
 	GameManager.main = self
-	SignalBus.ui_focus_changed.connect(_on_ui_focus_changed)
-	SignalBus.play_music.connect(_play_music)
-	if music_dict.get('title'):
-		musicAudio.stream = music_dict['title']
-		musicAudio.play()
 
-func _play_music(track : String) -> void:
-	if !music_dict.get(track):
+func _start_synced_music() -> void:
+	if !multiplayer.is_server():
+		return
+	await get_tree().create_timer(1.0).timeout
+	sync = true
+	while sync:
+		_play_track.rpc(_get_random_track())
+		await musicAudio.finished
+		await get_tree().create_timer(0.5).timeout
+
+func _get_random_track() -> String:
+	if current_music_dict.size() == 0:
+		current_music_dict = main_music_dict.keys()
+	return current_music_dict.pop_at(randi() % current_music_dict.size())
+
+@rpc("call_local")
+func _play_track(track : String) -> void:
+	if !main_music_dict.get(track):
 		print(track + ' is not a key in the music dict!')
 		return
-	musicAudio.stream = music_dict['title']
+	musicAudio.stream = load(main_music_dict[track])
+	current_song = track
 	musicAudio.play()
 
-func _on_ui_focus_changed() -> void:
-	if ui_move:
-		audio.stream = ui_move
-	else:
+@rpc("call_local")
+func _play_special(track : String) -> void:
+	if !special_music_dict.get(track):
+		print(track + ' is not a key in the music dict!')
 		return
-	audio.play()
+	musicAudio.stream = load(special_music_dict[track])
+	musicAudio.play()

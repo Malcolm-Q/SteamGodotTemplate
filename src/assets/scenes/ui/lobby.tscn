@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cyn7ibrfqnds4"]
+[gd_scene load_steps=5 format=3 uid="uid://cyn7ibrfqnds4"]
 
-[ext_resource type="Script" path="res://assets/scripts/ui/lobby.gd" id="1_w0i6f"]
+[ext_resource type="Script" uid="uid://bipprp55ksu1c" path="res://assets/scripts/ui/lobby.gd" id="1_w0i6f"]
 [ext_resource type="Theme" uid="uid://d23flwkfyegxj" path="res://assets/misc/main_menu.tres" id="2_rvpx7"]
-[ext_resource type="Script" path="res://assets/scripts/ui/button.gd" id="4_43473"]
 [ext_resource type="PackedScene" uid="uid://bw1x8vi0s1g7g" path="res://assets/scenes/ui/player_row.tscn" id="4_m1llm"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_r5h3g"]
@@ -119,7 +118,6 @@ focus_next = NodePath("../Start")
 focus_previous = NodePath("../Ready")
 theme = ExtResource("2_rvpx7")
 text = "  EXIT TO MAIN MENU  "
-script = ExtResource("4_43473")
 
 [node name="Ready" type="Button" parent="Panel"]
 layout_mode = 0
@@ -133,8 +131,6 @@ focus_next = NodePath("../Exit")
 focus_previous = NodePath("../Start")
 theme = ExtResource("2_rvpx7")
 text = ">READY"
-script = ExtResource("4_43473")
-_focused = true
 
 [node name="Start" type="Button" parent="Panel"]
 layout_mode = 0
@@ -150,7 +146,6 @@ theme = ExtResource("2_rvpx7")
 theme_override_colors/font_color = Color(0.829817, 0.978527, 0.822901, 1)
 disabled = true
 text = "  START  "
-script = ExtResource("4_43473")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 1

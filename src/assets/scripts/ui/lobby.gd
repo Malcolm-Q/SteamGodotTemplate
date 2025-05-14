@@ -5,13 +5,13 @@ var _is_ready : bool = false
 @export var row : PackedScene
 
 func _ready() -> void:
-	SignalBus.players_changed.connect(_on_players_changed)
+	NetworkManager.players_changed.connect(_on_players_changed)
 	$Panel/Exit.pressed.connect(NetworkManager._leave_lobby)
 	$Panel/Ready.pressed.connect(_on_ready)
 	$Panel/Start.pressed.connect(_on_start)
 
 func _on_start() -> void:
-	print('starting game here')
+	print('starting game on line 14 of lobby.gd')
 
 func _add_row(name_ : String, id: int) -> void:
 	var instance : HBoxContainer = row.instantiate()

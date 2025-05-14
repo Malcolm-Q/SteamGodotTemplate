@@ -6,10 +6,13 @@ var lobby_id = 0
 var players : Dictionary = {}
 var lan : bool = false
 
+signal players_changed
+signal display_error
+
 func _ready():
 	OS.set_environment("SteamAppID", str(480))
 	OS.set_environment("SteamGameID", str(480))
-	Steam.steamInit(480)
+	Steam.steamInit(false, 480)
 	Steam.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_joined.connect(_on_lobby_joined)
 	Steam.join_requested.connect(_on_lobby_join_requested)
@@ -20,14 +23,14 @@ func _ready():
 
 func _connection_failed() -> void:
 	multiplayer.multiplayer_peer.close()
-	SignalBus.display_error.emit('FAILED TO CONNECT...')
+	display_error.emit('FAILED TO CONNECT...')
 
 func _peer_disconnected(id: int) -> void:
 	if id == 1:
 		_leave_lobby()
 	else:
 		players.erase(id)
-		SignalBus.players_changed.emit()
+		players_changed.emit()
 
 func _connected_to_server() -> void:
 	var id = multiplayer.get_unique_id()
@@ -46,7 +49,7 @@ func _receive_player_data(data : Dictionary, id:int) -> void:
 	if id == multiplayer.get_unique_id():
 		_transition_to_lobby()
 	else:
-		SignalBus.players_changed.emit()
+		players_changed.emit()
 
 @rpc("any_peer")
 func sync_info(name_: String, id: int) -> void:
@@ -59,7 +62,7 @@ func sync_info(name_: String, id: int) -> void:
 	for p in players:
 		minimum_data[p] = {"name": players[p]["name"], "id": players[p]["id"]}
 	_receive_player_data.rpc(minimum_data, peer_id)
-	SignalBus.players_changed.emit()
+	players_changed.emit()
 
 func _process(_d:float) -> void:
 	Steam.run_callbacks()
@@ -77,14 +80,14 @@ func _on_lobby_created(conn, id) -> void:
 		if error != OK:
 			multiplayer_peer.close()
 			Steam.leaveLobby(lobby_id)
-			SignalBus.display_error.emit("ERROR CREATING HOST CLIENT\nCODE: " + str(error))
+			display_error.emit("ERROR CREATING HOST CLIENT\nCODE: " + str(error))
 			return
 		multiplayer.set_multiplayer_peer(multiplayer_peer)
 		players[1] = {"name": my_name, "id": Steam.getSteamID()}
 		Steam.allowP2PPacketRelay(true)
 		_transition_to_lobby()
 	else:
-		SignalBus.display_error.emit('ERROR CREATING STEAM LOBBY\nCODE: '+str(conn))
+		display_error.emit('ERROR CREATING STEAM LOBBY\nCODE: '+str(conn))
 
 func _on_lobby_joined(lobby: int, _permissions: int, _locked: bool, response: int) -> void:
 	if response == 1:
@@ -97,7 +100,7 @@ func _on_lobby_joined(lobby: int, _permissions: int, _locked: bool, response: in
 			if error != OK:
 				multiplayer_peer.close()
 				Steam.leaveLobby(lobby_id)
-				SignalBus.display_error.emit("ERROR CREATING CLIENT\nCODE: " + str(error))
+				display_error.emit("ERROR CREATING CLIENT\nCODE: " + str(error))
 				return
 			multiplayer.set_multiplayer_peer(multiplayer_peer)
 	else:
@@ -113,16 +116,18 @@ func _on_lobby_joined(lobby: int, _permissions: int, _locked: bool, response: in
 			9:  FAIL_REASON = "This lobby is community locked."
 			10: FAIL_REASON = "A user in the lobby has blocked you from joining."
 			11: FAIL_REASON = "A user you have blocked is in the lobby."
-		SignalBus.display_error.emit(FAIL_REASON)
+		display_error.emit(FAIL_REASON)
 
 func _transition_to_lobby() -> void:
 	await get_tree().process_frame
-	GameManager.main.add_child(GameManager.lobby)
 	GameManager.main.remove_child(GameManager.main_menu)
+	GameManager.main_menu.queue_free()
+	GameManager.main.add_child(GameManager.create_lobby())
 
 func _leave_lobby() -> void:
 	GameManager.main.remove_child(GameManager.lobby)
-	GameManager.main.add_child(GameManager.main_menu)
+	GameManager.lobby.queue_free()
+	GameManager.main.add_child(GameManager.create_main_menu())
 	GameManager.main_menu.enter()
 	if !lan:
 		Steam.leaveLobby(lobby_id)
@@ -134,7 +139,7 @@ func _on_join_lan() -> void:
 	multiplayer_peer = ENetMultiplayerPeer.new()
 	var error = multiplayer_peer.create_client("localhost", 8565)
 	if error != OK:
-		SignalBus.display_error.emit("FAILED TO CREATE CLIENT\nCODE: " + str(error))
+		display_error.emit("FAILED TO CREATE CLIENT\nCODE: " + str(error))
 		multiplayer_peer.close()
 		return
 	multiplayer.multiplayer_peer = multiplayer_peer
@@ -144,7 +149,7 @@ func _on_host_lan() -> void:
 	multiplayer_peer = ENetMultiplayerPeer.new()
 	var error = multiplayer_peer.create_server(8565, 3) # allow 3 peers for 4 player lobby
 	if error != OK:
-		SignalBus.display_error.emit("FAILED TO CREATE HOST\nCODE: " + str(error))
+		display_error.emit("FAILED TO CREATE HOST\nCODE: " + str(error))
 		multiplayer_peer.close()
 		return
 	multiplayer.multiplayer_peer = multiplayer_peer
@@ -162,6 +167,7 @@ func check_command_line() -> void:
 			if int(these_arguments[1]) > 0:
 				Steam.joinLobby(int(these_arguments[1]))
 
-func _on_lobby_join_requested(this_lobby_id: int, friend_id: int) -> void:
+func _on_lobby_join_requested(this_lobby_id: int, _friend_id: int) -> void:
 	lan = false
 	Steam.joinLobby(int(this_lobby_id))
+

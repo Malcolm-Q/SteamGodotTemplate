@@ -1,5 +1,7 @@
 extends Node
 
+signal settings_changed
+
 var fps := 0
 var vsync := 1
 var music := AudioServer.get_bus_index("Music")
@@ -54,8 +56,13 @@ func iterate_fps():
 		fps_index = 0
 	fps = fps_options[fps_index]
 
+func iterate_vsync():
+	vsync += 1
+	if vsync >= len(vsync_modes):
+		vsync = 0
+
 func change_settings():
-	SignalBus.change_settings.emit()
+	settings_changed.emit()
 	Engine.set_max_fps(fps)
 	DisplayServer.window_set_vsync_mode(vsync)
 	AudioServer.set_bus_volume_db(music, linear_to_db(music_vol))

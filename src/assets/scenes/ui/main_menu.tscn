@@ -1,11 +1,13 @@
-[gd_scene load_steps=17 format=3 uid="uid://bd47uqypshvxf"]
+[gd_scene load_steps=19 format=3 uid="uid://bd47uqypshvxf"]
 
-[ext_resource type="Script" path="res://assets/scripts/ui/main_menu.gd" id="1_5mr7l"]
+[ext_resource type="Script" uid="uid://yudg5k61uobo" path="res://assets/scripts/ui/main_menu.gd" id="1_5mr7l"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="2_7dfjg"]
 [ext_resource type="Theme" uid="uid://d23flwkfyegxj" path="res://assets/misc/main_menu.tres" id="2_uanxr"]
-[ext_resource type="Script" path="res://assets/scripts/ui/button.gd" id="4_12gtt"]
-[ext_resource type="Script" path="res://assets/scripts/ui/ui_state.gd" id="5_nbyv8"]
-[ext_resource type="Script" path="res://assets/scripts/ui/focus_grabber.gd" id="7_3jetc"]
-[ext_resource type="Script" path="res://assets/scripts/ui/settings_ui.gd" id="7_vrko7"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="2_vxvjd"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="3_57pax"]
+[ext_resource type="Script" uid="uid://7sxxp5hfvnve" path="res://assets/scripts/ui/settings_controller.gd" id="3_vxvjd"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="4_vxvjd"]
+[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="5_57pax"]
 
 [sub_resource type="Animation" id="Animation_bsp0i"]
 length = 0.001
@@ -40,8 +42,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mct42"]
 _data = {
-"RESET": SubResource("Animation_bsp0i"),
-"loop": SubResource("Animation_wbb8u")
+&"RESET": SubResource("Animation_bsp0i"),
+&"loop": SubResource("Animation_wbb8u")
 }
 
 [sub_resource type="InputEventAction" id="InputEventAction_qwbi3"]
@@ -90,25 +92,23 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3h0fr"]
 _data = {
-"RESET": SubResource("Animation_2geqd"),
-"load": SubResource("Animation_vn3rx")
+&"RESET": SubResource("Animation_2geqd"),
+&"load": SubResource("Animation_vn3rx")
 }
 
 [node name="MainMenu" type="CanvasLayer"]
 follow_viewport_enabled = true
 script = ExtResource("1_5mr7l")
 
-[node name="Start" type="Panel" parent="."]
+[node name="Title" type="Panel" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_uanxr")
-script = ExtResource("5_nbyv8")
-can_go_back = false
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Start"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Title"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -124,7 +124,7 @@ grow_vertical = 2
 theme = ExtResource("2_uanxr")
 alignment = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Start/VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Title/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_uanxr")
@@ -132,7 +132,7 @@ theme_override_font_sizes/normal_font_size = 128
 bbcode_enabled = true
 text = "[center]TITLE[/center]"
 
-[node name="RichTextLabel4" type="RichTextLabel" parent="Start/VBoxContainer"]
+[node name="RichTextLabel4" type="RichTextLabel" parent="Title/VBoxContainer"]
 clip_contents = false
 layout_mode = 2
 size_flags_vertical = 3
@@ -149,13 +149,13 @@ text = "
 [center]PRESS START[/center]"
 scroll_active = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Start"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Title"]
 libraries = {
-"": SubResource("AnimationLibrary_mct42")
+&"": SubResource("AnimationLibrary_mct42")
 }
 autoplay = "loop"
 
-[node name="start" type="Button" parent="Start"]
+[node name="start" type="Button" parent="Title"]
 layout_mode = 0
 offset_left = 439.0
 offset_top = 527.0
@@ -172,8 +172,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_uanxr")
-script = ExtResource("5_nbyv8")
-can_go_back = false
 
 [node name="Title" type="RichTextLabel" parent="Main"]
 layout_mode = 1
@@ -191,7 +189,7 @@ theme_override_font_sizes/normal_font_size = 128
 bbcode_enabled = true
 text = "TITLE"
 
-[node name="options" type="VBoxContainer" parent="Main"]
+[node name="Options" type="VBoxContainer" parent="Main"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -204,32 +202,27 @@ grow_vertical = 2
 theme = ExtResource("2_uanxr")
 alignment = 1
 
-[node name="Play" type="Button" parent="Main/options"]
+[node name="Play" type="Button" parent="Main/Options"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
 theme = ExtResource("2_uanxr")
-text = ">PLAY
-"
+text = "PLAY"
 alignment = 0
-script = ExtResource("4_12gtt")
-_focused = true
 
-[node name="Settings" type="Button" parent="Main/options"]
+[node name="Settings" type="Button" parent="Main/Options"]
 layout_mode = 2
 theme = ExtResource("2_uanxr")
-text = " SETTINGS"
+text = "SETTINGS"
 alignment = 0
-script = ExtResource("4_12gtt")
 
-[node name="Quit" type="Button" parent="Main/options"]
+[node name="Quit" type="Button" parent="Main/Options"]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Play")
 theme = ExtResource("2_uanxr")
-text = " QUIT"
+text = "QUIT"
 alignment = 0
-script = ExtResource("4_12gtt")
 
-[node name="Play" type="Panel" parent="."]
+[node name="LobbyType" type="Panel" parent="."]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -237,9 +230,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_uanxr")
-script = ExtResource("5_nbyv8")
 
-[node name="Title" type="RichTextLabel" parent="Play"]
+[node name="Title" type="RichTextLabel" parent="LobbyType"]
 layout_mode = 1
 offset_top = 7.0
 offset_right = 1149.0
@@ -255,7 +247,7 @@ theme_override_font_sizes/normal_font_size = 128
 bbcode_enabled = true
 text = "TITLE"
 
-[node name="options" type="VBoxContainer" parent="Play"]
+[node name="Options" type="VBoxContainer" parent="LobbyType"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -268,25 +260,21 @@ grow_vertical = 2
 theme = ExtResource("2_uanxr")
 alignment = 1
 
-[node name="Online" type="Button" parent="Play/options"]
+[node name="Steam" type="Button" parent="LobbyType/Options"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../LAN")
 theme = ExtResource("2_uanxr")
-text = ">CREATE LOBBY
-"
+text = "STEAM"
 alignment = 0
-script = ExtResource("4_12gtt")
-_focused = true
 
-[node name="LAN" type="Button" parent="Play/options"]
+[node name="LAN" type="Button" parent="LobbyType/Options"]
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../Online")
+focus_neighbor_bottom = NodePath("../Steam")
 theme = ExtResource("2_uanxr")
-text = " LAN"
+text = "LAN"
 alignment = 0
-script = ExtResource("4_12gtt")
 
-[node name="LAN" type="Panel" parent="."]
+[node name="HostJoin" type="Panel" parent="."]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -294,9 +282,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_uanxr")
-script = ExtResource("5_nbyv8")
 
-[node name="Title" type="RichTextLabel" parent="LAN"]
+[node name="Title" type="RichTextLabel" parent="HostJoin"]
 layout_mode = 1
 offset_top = 7.0
 offset_right = 1149.0
@@ -312,7 +299,7 @@ theme_override_font_sizes/normal_font_size = 128
 bbcode_enabled = true
 text = "TITLE"
 
-[node name="options" type="VBoxContainer" parent="LAN"]
+[node name="Options" type="VBoxContainer" parent="HostJoin"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -325,23 +312,20 @@ grow_vertical = 2
 theme = ExtResource("2_uanxr")
 alignment = 1
 
-[node name="Host" type="Button" parent="LAN/options"]
+[node name="Host" type="Button" parent="HostJoin/Options"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Join")
 theme = ExtResource("2_uanxr")
-text = ">HOST
+text = "HOST
 "
 alignment = 0
-script = ExtResource("4_12gtt")
-_focused = true
 
-[node name="Join" type="Button" parent="LAN/options"]
+[node name="Join" type="Button" parent="HostJoin/Options"]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Host")
 theme = ExtResource("2_uanxr")
-text = " JOIN"
+text = "JOIN"
 alignment = 0
-script = ExtResource("4_12gtt")
 
 [node name="Settings" type="Panel" parent="."]
 visible = false
@@ -351,7 +335,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_uanxr")
-script = ExtResource("7_vrko7")
+
+[node name="SettingsController" type="Node" parent="Settings" node_paths=PackedStringArray("fps_button", "vsync_button", "window_button", "music_slider", "sfx_slider", "mouse_slider")]
+script = ExtResource("3_vxvjd")
+fps_button = NodePath("../Options/FPS")
+vsync_button = NodePath("../Options/VSync")
+window_button = NodePath("../Options/Fullscreen")
+music_slider = NodePath("../Options/Music/HSlider")
+sfx_slider = NodePath("../Options/SFX/HSlider")
+mouse_slider = NodePath("../Options/Mouse/HSlider")
 
 [node name="Title" type="RichTextLabel" parent="Settings"]
 layout_mode = 0
@@ -369,7 +361,7 @@ theme_override_font_sizes/normal_font_size = 128
 bbcode_enabled = true
 text = "TITLE"
 
-[node name="options" type="VBoxContainer" parent="Settings"]
+[node name="Options" type="VBoxContainer" parent="Settings"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -382,43 +374,39 @@ grow_vertical = 2
 theme = ExtResource("2_uanxr")
 alignment = 1
 
-[node name="Fullscreen" type="Button" parent="Settings/options"]
+[node name="Fullscreen" type="Button" parent="Settings/Options"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../../Apply")
 theme = ExtResource("2_uanxr")
-text = " WINDOW     :  WINDOWED
+text = "WINDOW     :  WINDOWED
 "
 alignment = 0
-script = ExtResource("4_12gtt")
-_focused = true
 
-[node name="VSync" type="Button" parent="Settings/options"]
+[node name="VSync" type="Button" parent="Settings/Options"]
 layout_mode = 2
 theme = ExtResource("2_uanxr")
-text = " VSYNC      :  ENABLED"
+text = "VSYNC      :  ENABLED"
 alignment = 0
-script = ExtResource("4_12gtt")
 
-[node name="FPS" type="Button" parent="Settings/options"]
+[node name="FPS" type="Button" parent="Settings/Options"]
 layout_mode = 2
 theme = ExtResource("2_uanxr")
-text = " FPS TARGET :  0"
+text = "FPS TARGET :  UNLIMITED"
 alignment = 0
-script = ExtResource("4_12gtt")
 
-[node name="Music" type="Control" parent="Settings/options"]
+[node name="Music" type="Control" parent="Settings/Options"]
 layout_mode = 2
 theme = ExtResource("2_uanxr")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Settings/options/Music"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Settings/Options/Music"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 0
 offset_right = 476.0
 offset_bottom = 30.0
 theme = ExtResource("2_uanxr")
-text = " MUSIC VOL  :"
+text = "MUSIC VOL  :"
 
-[node name="HSlider" type="HSlider" parent="Settings/options/Music" node_paths=PackedStringArray("affected_text")]
+[node name="HSlider" type="HSlider" parent="Settings/Options/Music"]
 layout_mode = 0
 offset_left = 426.0
 offset_top = 7.0
@@ -429,23 +417,21 @@ theme = ExtResource("2_uanxr")
 max_value = 1.0
 step = 0.05
 value = 0.5
-script = ExtResource("7_3jetc")
-affected_text = NodePath("../RichTextLabel")
 
-[node name="SFX" type="Control" parent="Settings/options"]
+[node name="SFX" type="Control" parent="Settings/Options"]
 layout_mode = 2
 theme = ExtResource("2_uanxr")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Settings/options/SFX"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Settings/Options/SFX"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 0
 offset_top = 30.0
 offset_right = 476.0
 offset_bottom = 60.0
 theme = ExtResource("2_uanxr")
-text = " SFX VOL    :"
+text = "SFX VOL    :"
 
-[node name="HSlider" type="HSlider" parent="Settings/options/SFX" node_paths=PackedStringArray("affected_text")]
+[node name="HSlider" type="HSlider" parent="Settings/Options/SFX"]
 custom_minimum_size = Vector2(225, 0)
 layout_mode = 0
 offset_left = 426.0
@@ -457,23 +443,21 @@ theme = ExtResource("2_uanxr")
 max_value = 1.0
 step = 0.05
 value = 0.5
-script = ExtResource("7_3jetc")
-affected_text = NodePath("../RichTextLabel")
 
-[node name="Mouse" type="Control" parent="Settings/options"]
+[node name="Mouse" type="Control" parent="Settings/Options"]
 layout_mode = 2
 theme = ExtResource("2_uanxr")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Settings/options/Mouse"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Settings/Options/Mouse"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 0
 offset_top = 60.0
 offset_right = 476.0
 offset_bottom = 90.0
 theme = ExtResource("2_uanxr")
-text = " MOUSE SENS :"
+text = "MOUSE SENS :"
 
-[node name="HSlider" type="HSlider" parent="Settings/options/Mouse" node_paths=PackedStringArray("affected_text")]
+[node name="HSlider" type="HSlider" parent="Settings/Options/Mouse"]
 custom_minimum_size = Vector2(225, 0)
 layout_mode = 0
 offset_left = 426.0
@@ -485,8 +469,6 @@ theme = ExtResource("2_uanxr")
 max_value = 1.0
 step = 0.05
 value = 0.5
-script = ExtResource("7_3jetc")
-affected_text = NodePath("../RichTextLabel")
 
 [node name="Apply" type="Button" parent="Settings"]
 layout_mode = 0
@@ -494,11 +476,10 @@ offset_left = 499.0
 offset_top = 578.0
 offset_right = 667.0
 offset_bottom = 607.0
-focus_neighbor_bottom = NodePath("../options/Fullscreen")
+focus_neighbor_bottom = NodePath("../Options/Fullscreen")
 theme = ExtResource("2_uanxr")
-text = " APPLY"
+text = "APPLY"
 alignment = 0
-script = ExtResource("4_12gtt")
 
 [node name="Loading" type="Panel" parent="."]
 visible = false
@@ -508,8 +489,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_uanxr")
-script = ExtResource("5_nbyv8")
-can_go_back = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Loading"]
 layout_mode = 1
@@ -537,7 +516,7 @@ text = "[center]LOADING[/center]"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Loading"]
 libraries = {
-"": SubResource("AnimationLibrary_3h0fr")
+&"": SubResource("AnimationLibrary_3h0fr")
 }
 autoplay = "load"
 
@@ -549,8 +528,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_uanxr")
-script = ExtResource("5_nbyv8")
-can_go_back = false
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Error"]
 layout_mode = 2
@@ -572,23 +549,115 @@ offset_right = 802.0
 offset_bottom = 562.0
 theme = ExtResource("2_uanxr")
 shortcut_in_tooltip = false
-text = " RETURN TO MENU "
+text = "RETURN TO MENU "
 alignment = 0
-script = ExtResource("4_12gtt")
-_focused = true
 
-[connection signal="pressed" from="Start/start" to="." method="transition" binds= ["main"]]
-[connection signal="pressed" from="Main/options/Play" to="." method="transition" binds= ["play"]]
-[connection signal="pressed" from="Main/options/Settings" to="." method="transition" binds= ["settings"]]
-[connection signal="pressed" from="Main/options/Quit" to="." method="_on_quit"]
-[connection signal="pressed" from="Play/options/Online" to="." method="_on_host" binds= [false]]
-[connection signal="pressed" from="Play/options/LAN" to="." method="transition" binds= ["lan"]]
-[connection signal="pressed" from="LAN/options/Host" to="." method="_on_host" binds= [true]]
-[connection signal="pressed" from="LAN/options/Join" to="." method="_on_join_lan"]
-[connection signal="pressed" from="Settings/options/Fullscreen" to="." method="_toggle_fullscreen"]
-[connection signal="pressed" from="Settings/options/VSync" to="." method="_set_vsync"]
-[connection signal="pressed" from="Settings/options/FPS" to="." method="_set_fps"]
-[connection signal="value_changed" from="Settings/options/Music/HSlider" to="." method="_set_music"]
-[connection signal="value_changed" from="Settings/options/SFX/HSlider" to="." method="_set_sfx"]
-[connection signal="value_changed" from="Settings/options/Mouse/HSlider" to="." method="_on_mouse_sensitivity"]
-[connection signal="pressed" from="Error/Return" to="." method="transition" binds= ["main"]]
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("2_7dfjg")
+metadata/_custom_type_script = "uid://couw105c3bde4"
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("3_57pax")
+initial_state = NodePath("Title")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Title" type="Node" parent="StateChart/Root"]
+script = ExtResource("4_vxvjd")
+
+[node name="onEnter" type="Node" parent="StateChart/Root/Title"]
+script = ExtResource("5_57pax")
+to = NodePath("../../Main")
+event = &"enter"
+delay_in_seconds = "0.0"
+
+[node name="Main" type="Node" parent="StateChart/Root"]
+script = ExtResource("3_57pax")
+initial_state = NodePath("Root")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Root" type="Node" parent="StateChart/Root/Main"]
+script = ExtResource("4_vxvjd")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="onStart" type="Node" parent="StateChart/Root/Main/Root"]
+script = ExtResource("5_57pax")
+to = NodePath("../../LobbyType")
+event = &"play"
+delay_in_seconds = "0.0"
+
+[node name="onSettings" type="Node" parent="StateChart/Root/Main/Root"]
+script = ExtResource("5_57pax")
+to = NodePath("../../../Settings")
+event = &"settings"
+delay_in_seconds = "0.0"
+
+[node name="LobbyType" type="Node" parent="StateChart/Root/Main"]
+script = ExtResource("4_vxvjd")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="onBack" type="Node" parent="StateChart/Root/Main/LobbyType"]
+script = ExtResource("5_57pax")
+to = NodePath("../../Root")
+event = &"back"
+delay_in_seconds = "0.0"
+
+[node name="onDecision" type="Node" parent="StateChart/Root/Main/LobbyType"]
+script = ExtResource("5_57pax")
+to = NodePath("../../HostJoin")
+event = &"decision"
+delay_in_seconds = "0.0"
+
+[node name="HostJoin" type="Node" parent="StateChart/Root/Main"]
+script = ExtResource("4_vxvjd")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="onBack" type="Node" parent="StateChart/Root/Main/HostJoin"]
+script = ExtResource("5_57pax")
+to = NodePath("../../LobbyType")
+event = &"back"
+delay_in_seconds = "0.0"
+
+[node name="onLoading" type="Node" parent="StateChart/Root/Main/HostJoin"]
+script = ExtResource("5_57pax")
+to = NodePath("../../../Loading")
+event = &"loading"
+delay_in_seconds = "0.0"
+
+[node name="Settings" type="Node" parent="StateChart/Root"]
+script = ExtResource("4_vxvjd")
+
+[node name="onBack" type="Node" parent="StateChart/Root/Settings"]
+script = ExtResource("5_57pax")
+to = NodePath("../../Main")
+event = &"back"
+delay_in_seconds = "0.0"
+
+[node name="Loading" type="Node" parent="StateChart/Root"]
+script = ExtResource("4_vxvjd")
+
+[node name="onError" type="Node" parent="StateChart/Root/Loading"]
+script = ExtResource("5_57pax")
+to = NodePath("../../Error")
+event = &"error"
+delay_in_seconds = "0.0"
+
+[node name="Error" type="Node" parent="StateChart/Root"]
+script = ExtResource("4_vxvjd")
+
+[node name="onBack" type="Node" parent="StateChart/Root/Error"]
+script = ExtResource("5_57pax")
+to = NodePath("../../Main")
+event = &"back"
+delay_in_seconds = "0.0"
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("2_vxvjd")]
+offset_left = 811.0
+offset_right = 18.0
+offset_bottom = 50.0
+initial_node_to_watch = NodePath("../StateChart")
+
+[node name="SFX" type="AudioStreamPlayer" parent="."]
+max_polyphony = 20
+bus = &"SFX"
+
+[connection signal="pressed" from="Title/start" to="." method="transition" binds= ["main"]]

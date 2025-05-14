@@ -15,7 +15,7 @@ config/description="A project template using the Expresso Bits SteamMultiplayerP
 It contains boilerplate code for a main menu with saved settings, LAN and Steam netcode, a simple audio bus for music and sfx.
 Main menu UI is controlled by a theme resource in assets/misc. UI work with mouse keyboard or controller."
 run/main_scene="res://assets/scenes/main.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [audio]
@@ -24,7 +24,6 @@ buses/default_bus_layout="res://assets/audio/bus.tres"
 
 [autoload]
 
-SignalBus="*res://assets/scripts/globals/signal_bus.gd"
 NetworkManager="*res://assets/scripts/globals/network_manager.gd"
 GameManager="*res://assets/scripts/globals/game_manager.gd"
 Settings="*res://assets/scripts/globals/settings.gd"
@@ -32,6 +31,10 @@ Settings="*res://assets/scripts/globals/settings.gd"
 [display]
 
 window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
 
 [input]
 
