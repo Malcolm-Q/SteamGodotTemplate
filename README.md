@@ -14,7 +14,15 @@ Pull requests and even alternate branches like one including a lobby browser for
 
 Creates 4 player lobbies by default. Does not include lobby browser. Lobbies are friends only by default.  
 I may create a branch with a lobby browser but I don't use them in my own games so we'll see.  
-UI is controllable via mouse.
+UI is controllable via mouse.  
+
+Launch flags:
+- --no-sound
+  - Mutes all audio for that instance
+- --host
+  - Hosts a LAN lobby
+- --join
+  - Joins said LAN lobby.
 
 SC of a LAN lobby:
 ![image](https://github.com/user-attachments/assets/e96f0b55-0593-45da-8cd1-3a9c38fc5de6)
