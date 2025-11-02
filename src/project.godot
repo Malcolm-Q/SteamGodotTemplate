@@ -15,7 +15,7 @@ config/description="A project template using the Expresso Bits SteamMultiplayerP
 It contains boilerplate code for a main menu with saved settings, LAN and Steam netcode, a simple audio bus for music and sfx.
 Main menu UI is controlled by a theme resource in assets/misc. UI work with mouse keyboard or controller."
 run/main_scene="res://assets/scenes/main.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [audio]
@@ -31,10 +31,6 @@ Settings="*res://assets/scripts/globals/settings.gd"
 [display]
 
 window/stretch/mode="canvas_items"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
 
 [input]
 
@@ -98,3 +94,9 @@ attack={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":0,"pressure":0.0,"pressed":true,"script":null)
 ]
 }
+
+[steam]
+
+initialization/app_id=0
+initialization/initialize_on_startup=false
+initialization/embed_callbacks=false
